@@ -1,5 +1,5 @@
 # iiitb_sysarray_for_3x3_mat_mul 
-# Sytolic Array for 3x3 Matrices Multiplication of Integer Data type
+# Systolic Array for 3x3 Matrices Multiplication of Integer Data type
 
 
 The chip design for a Systolic Array which can multiply two 3x3 Matrices of Integer Data type. This model consists of Processing Elements(PE) and few delay blocks.
