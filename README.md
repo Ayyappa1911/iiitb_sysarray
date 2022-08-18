@@ -95,6 +95,16 @@ All the other characteristics are mentioned under the Heading Systolic Array
 
 ## synthesis of verilog code
 
+### SYNTHESIS
+**Synthesis**: Synthesis transforms the simple RTL design into a gate-level netlist with all the constraints as specified by the designer. In simple language, Synthesis is a process that converts the abstract form of design to a properly implemented chip in terms of logic gates.
+
+Synthesis takes place in multiple steps:
+- Converting RTL into simple logic gates.
+- Mapping those gates to actual technology-dependent logic gates available in the technology libraries.
+- Optimizing the mapped netlist keeping the constraints set by the designer intact.
+
+**Synthesizer**: It is a tool we use to convert out RTL design code to netlist. Yosys is the tool I've used in this project.
+
 #### About Yosys
 Yosys is a framework for Verilog RTL synthesis. It currently has extensive Verilog-2005 support and provides a basic set of synthesis algorithms for various application domains.
 
@@ -105,21 +115,154 @@ To install yosys follow the instructions in  this github repository
 https://github.com/YosysHQ/yosys
 
 
-#### to synthesize
+#### Commands in Linux to synthesize
 ```
 $   yosys
+```
+
+The Command in Linux opens a terminal as below
+
+ <p align="center">
+  <img  src="/Images/yosys_images/yosys.png">
+</p>
+
+All the commands can be executed either by running the yosys_run.sh file given below.
+
+```
 $   yosys>    script yosys_run.sh
 ```
 
 #### to see diffarent types of cells after synthesys
 ```
-$   yosys>    stat
+yosys>    stat
 ```
 #### to generate schematics
 ```
-$   yosys>    show
+yosys>    show
 ```
 
+All the Commands executed via .sh file are given below
+
+#### read_liberty will import all the necessary cells.
+
+```
+yosys> read_liberty -lib <Path for sky130_fd_sc_hd__tt_025C_1v80.lib>
+```
+ <p>
+  <img  src="/Images/yosys_images/read_liberty.png">
+</p>
+
+
+
+#### read_verilog will read the all the necessary files for synthesis.
+#### It must give Sucessfully Fined to all the Modules.
+
+```
+yosys> read_verilog <Path for all the code files>
+```
+
+ <p>
+  <img  src="/Images/yosys_images/read_verilog.png">
+</p>
+
+#### synth -top command will take the top module as an attribute in the command to synthesize
+
+```
+yosys> synth -top <top_module_name>
+```
+#### It a long process. It starts with the design hierarchy analysis and It ends with Design stats and Check Pass
+
+ <p>
+  <img  src="/Images/yosys_images/synth_1.png">
+</p>
+
+ <p>
+  <img  src="/Images/yosys_images/synth_2.png">
+</p>
+
+#### If your design has flipflops. The command below will map d flipflops required to the design.
+#### Ensure that the no of flip flops required for the each module is same as allocated.
+
+```
+yosys> dfflibmap -liberty <Path for sky130_fd_sc_hd__tt_025C_1v80.lib>
+```
+
+<p>
+  <img  src="/Images/yosys_images/dfflibmap_1.png">
+</p>
+
+ <p>
+  <img  src="/Images/yosys_images/dfflibmap_2.png">
+</p>
+
+### abc command will allocate all the standard gates to the design
+### Ensure all the No of Input, and total no of output ports for all the modules are correct.
+
+```
+yosys> abc -liberty <Path for sky130_fd_sc_hd__tt_025C_1v80.lib> -script +strash;scorr;ifraig;retime,{D};strash;dch,-f;map,-M,1,{D}
+```
+
+<p>
+  <img  src="/Images/yosys_images/ABC.png">
+</p>
+
+#### clean removes all the unused wires and gates.
+
+```
+yosys> clean
+```
+
+#### fatten removes all the unused modules
+
+```
+yosys> flatten 
+```
+
+#### write_verilog creates the synthesised version of .V file. For this Project it's iiitb_sysarray_synth.v
+
+```
+yosys> write_verilog -noattr <file name of the required synthesis file> 
+```
+
+<p>
+  <img  src="/Images/yosys_images/write_verilog.png">
+</p>
+
+#### stat shows all the final statistics of the synthesized design.
+
+```
+yosys> stat
+```
+
+<p>
+  <img  src="/Images/yosys_images/stat.png">
+</p>
+
+
+#### show displays the design in an Image format in a new GUI.
+
+```
+yosys> show <module_name>
+```
+
+### GATE LEVEL SIMULATION(GLS)
+GLS is generating the simulation output by running test bench with netlist file generated from synthesis as design under test. Netlist is logically same as RTL code, therefore, same test bench can be used for it.We perform this to verify logical correctness of the design after synthesizing it. Also ensuring the timing of the design is met.
+Folllowing are the commands to run the GLS simulation:
+```
+$ iverilog -DFUNCTIONAL -DUNIT_DELAY=#1 ../verilog_model/primitives.v ../verilog_model/sky130_fd_sc_hd.v iiitb_sysarray_synth.v iiitb_sysarray_tb.v
+$ ./a.out
+$ gtkwave sysarray.vcd
+```
+The gtkwave output for the netlist should match the output waveform for the RTL design file. As netlist and design code have same set of inputs and outputs, we can use the same testbench and compare the waveforms.
+#### GLS Waveforms
+
+<p>
+  <img  src="/Images/yosys_images/synthesis_1.png">
+</p>
+
+## Observations
+
+- The waveforms generated using the Original module files/logic and the Waveforms generated by the synthesised GLS are correct.
 
 ## Contributors 
 
@@ -146,5 +289,7 @@ $   yosys>    show
 - <a href="https://youtu.be/vADVh1ogNo0">Youtube video for understanding this model</a> 
 
 - C. Bagavathi MTech, O. Saraniya ME, PhD, in Deep Learning and Parallel Computing Environment for Bioengineering Systems, 2019
+
+- <a href="https://github.com/sanampudig/iiitb_pwm_gen.git"> Resource for modeling the repo and some part of tool content</a>
 
 
