@@ -609,6 +609,43 @@ The sky130_vsdinv cells should be visible in the netlist generated after clock t
   <img  src="/Images/OL_images/net_cts.png">
 </p>
 
+## Routing
+```
+% run_routing
+```
+<p>
+  <img  src="/Images/OL_images/routing.png">
+</p>
+
+For the layout Navigate to results -> routing and use the command
+```
+magic -T /home/ayyappa/Desktop/ASIC/OpenLane/pdks/sky130A/libs.tech/sky130A.tech read ../../tmp/merged.nom.lef def read iiitb_sysarray.def &
+```
+
+Routing view in magic
+
+<p>
+  <img  src="/Images/OL_images/routing_layout.png">
+</p>
+
+<bold>sky130_vsdinv</bold> in the routing view in Magic
+
+<p>
+  <img  src="/Images/OL_images/vsdinv_routing.png">
+</p>
+
+The sky130_vsdinv cells should be visible in the netlist generated after routing.
+
+<p>
+  <img  src="/Images/OL_images/net_routing.png">
+</p>
+
+Dimensional data extracted in tcl command line after routing\
+
+<p>
+  <img  src="/Images/OL_images/area_routing_tcl.png">
+</p>
+
 
 ## Contributors 
 
