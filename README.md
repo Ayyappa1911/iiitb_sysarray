@@ -266,6 +266,21 @@ The gtkwave output for the netlist should match the output waveform for the RTL 
 
 # Post Synthesis (ASIC FLOW)
 
+## Creating a custom inverter cell.
+```
+$ git clone https://github.com/nickson-jose/vsdstdcelldesign.git
+
+$ cd vsdstdcelldesign
+
+$  cp ./libs/sky130A.tech sky130A.tech
+
+$ magic -T sky130A.tech sky130_inv.mag &
+````
+<p>
+  <img  src="/Images/OL_images/vsdinv_model.png">
+</p>
+
+
 ## Layout 
 
 ### Installations required for post Synthesis Layout
