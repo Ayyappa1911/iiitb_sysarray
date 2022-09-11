@@ -661,6 +661,37 @@ Dimensional data extracted in tcl command line after routing\
   <img  src="/Images/OL_images/area_routing_tcl.png">
 </p>
 
+### We can also run entire flow with one command but we cannot add our custom cell in that flow.
+
+```
+$ ./flow.tcl -design iiitb_sysarray
+```
+Use the above command in the openlane container to run the entire flow at once.
+
+We can open the resulting view via .mag file in signoff folder of the results of this run.
+
+```
+magic -T /home/ayyappa/Desktop/ASIC/OpenLane/pdks/sky130A/libs.tech/magic/sky130A.tech iiitb_sysarray.mag &
+```
+<p>
+  <img  src="/Images/OL_images/non_interactive_cmd.png">
+</p>
+
+## Final view of the design in magic
+
+<p>
+  <img  src="/Images/OL_images/non_interactive_1.png">
+</p>
+
+<p>
+  <img  src="/Images/OL_images/non_ineractive_2.png">
+</p>
+
+## View in Klayout
+
+<p>
+  <img  src="/Images/OL_images/klayout_1.png">
+</p>
 
 ## Contributors 
 
@@ -689,5 +720,7 @@ Dimensional data extracted in tcl command line after routing\
 - C. Bagavathi MTech, O. Saraniya ME, PhD, in Deep Learning and Parallel Computing Environment for Bioengineering Systems, 2019
 
 - <a href="https://github.com/sanampudig/iiitb_pwm_gen.git"> Resource for modeling the repo and some part of tool content</a>
+
+- <a href="https://github.com/DantuNandiniDevi/iiitb_freqdiv.git"> Resource for using openlane</a>
 
 
