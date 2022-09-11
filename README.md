@@ -280,6 +280,68 @@ $ magic -T sky130A.tech sky130_inv.mag &
   <img  src="/Images/OL_images/vsdinv_model.png">
 </p>
 
+To extract Spice netlist, Use the following commands in tcl window.
+
+```
+% extract all
+
+% ext2spice cthresh 0 rthresh 0
+
+% ext2spice
+```
+
+The Final spice netlist should look as follows. Update the "sky130_inv.spice" as follows.
+
+```
+* SPICE3 file created from sky130_inv.ext - technology: sky130A
+
+.option scale=0.01u
+.include ./libs/pshort.lib
+.include ./libs/nshort.lib
+
+
+M1001 Y A VGND VGND nshort_model.0 ad=1435 pd=152 as=1365 ps=148 w=35 l=23
+M1000 Y A VPWR VPWR pshort_model.0 ad=1443 pd=152 as=1517 ps=156 w=37 l=23
+VDD VPWR 0 3.3V
+VSS VGND 0 0V
+Va A VGND PULSE(0V 3.3V 0 0.1ns 0.1ns 2ns 4ns)
+C0 Y VPWR 0.08fF
+C1 A Y 0.02fF
+C2 A VPWR 0.08fF
+C3 Y VGND 0.18fF
+C4 VPWR VGND 0.74fF
+
+
+.tran 1n 20n
+.control
+run
+.endc
+.end
+```
+### Executing the Spice file created.
+
+Execute the following command in the terminal to open spice console.
+
+<p>
+  <img  src="/Images/OL_images/vsdinv_ngspice.png">
+</p>
+
+### Plot for the inverter cell.
+
+```
+-> plot y vs time a
+```
+
+<p>
+  <img  src="/Images/OL_images/plt_y_vs_a.png">
+</p>
+
+For saving the lef files
+```
+% save sky130_vsdinv.mag
+$ magic -T sky130A.tech sky130_vsdinv.mag
+% lef write sky130_vsdinv
+```
 
 ## Layout 
 
