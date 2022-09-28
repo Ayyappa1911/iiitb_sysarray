@@ -755,6 +755,87 @@ magic -T /home/ayyappa/Desktop/ASIC/OpenLane/pdks/sky130A/libs.tech/magic/sky130
   <img  src="/Images/OL_images/klayout_1.png">
 </p>
 
+
+## Results for Midsems
+
+### 1. Post-synthesis Gate count for the design
+
+<p>
+  <img  src="/Images/midsem/stat_midterm1.png">
+</p>
+<p>
+  <img  src="/Images/midsem/stat_midterm2.png">
+</p>
+
+Post-synthesis gate count for the design is 61177.
+
+### 2. Area of the design using box command
+
+<p>
+  <img  src="/Images/midsem/box_midterm.png">
+</p>
+
+The area of the design is 2043440 (um)^2.
+
+### 3. Performance achieved for the design using OpenSTA
+
+we will find reg-reg slack using Opensta and find the performance.
+
+The commands to initiate the Sta in the openlane folder.
+
+```
+$ sudo make mount
+ -> sta
+```
+Type the following commands to calculate the reg-reg slack of the design in OpenSTA
+
+```
+% read_liberty -min /home/ayyappa/Desktop/ASIC/OpenLane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__ff_n40C_1v56.lib
+
+% read_liberty -max /home/ayyappa/Desktop/ASIC/OpenLane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__ff_n40C_1v56.lib
+
+% read_verilog /home/ayyappa/Desktop/ASIC/OpenLane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/iiitb_sysarray.v
+
+% link_design iiitb_sysarray
+
+% read_sdc /home/ayyappa/Desktop/ASIC/OpenLane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/iiitb_sysarray.sdc
+
+% read_spef /home/ayyappa/Desktop/ASIC/OpenLane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/iiitb_sysarray.spef
+
+% create_clock -name clock -period 20 {clock}
+
+% set_propagated_clock clock
+
+% report_checks -from _118450_ -to _118974_
+```
+
+
+<p>
+  <img  src="/Images/midsem/sta.png">
+</p>
+
+The value of slack found out to be 11.62 ns for a clock of 20ns.
+
+To find the performancs use the formula 1/(clockperiod -slack)
+
+performance = 1/(20ns-11.62ns) = 0.1193 GHz.
+
+### 4. Flip-flop to Standard cell ratio
+
+<p>
+  <img  src="/Images/midsem/dff_midsem.png">
+</p>
+
+Flip-flop to standard cell ratio is = no of d flipflops/ total no of cells = 2208/61177 = 0.0361.
+
+### 5. Power metrics (total power consumed)
+
+<p>
+  <img  src="/Images/midsem/power_midterm.png">
+</p>
+
+The total power consumed is 0.28 watt.
+
 ## Contributors 
 
 - **Ayyappa Koppuravuri** 
